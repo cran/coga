@@ -6,7 +6,7 @@
 ##' density, distribution function and do simulation work.
 ##'
 ##' @section coga functions:
-##' dcoga, pcoga, and rcoga
+##' dcoga, pcoga, rcoga, dcoga2dim, and pcoga2dim.
 ##'
 ##' @author
 ##' \itemize{
@@ -19,5 +19,6 @@
 ##' @name coga
 ##' @useDynLib coga
 ##' @importFrom Rcpp sourceCpp
+##' @importFrom Rcpp evalCpp
 
 NULL

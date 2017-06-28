@@ -1,5 +1,5 @@
 ---
-title: "R package coga: The Description of Algorithm and Correctness"
+title: "R package coga: Convolution of Gamma Distributions"
 author: "Chaoran Hu"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -19,7 +19,7 @@ if (!requireNamespace("microbenchmark", quietly = TRUE)) {
 
 # Introduction
 
-This vignette is the description of algorithm in this package and the correctness check via simulation experiment. The algorithm of this package comes from Moschopoulos Peter G. (1985). This vignette also give some useful informations.
+This R package coga can help you to calculate density and distribution function of convolution of gamma distributions. The convolution of gamma distributions is the sum of series of independent gamma distributions. The algorithm of this package comes from Moschopoulos Peter G. (1985). The R coda in this vignette also can be considered as useful examples.
 
 # Algorithm
 
@@ -77,10 +77,26 @@ microbenchmark::microbenchmark(
 )
 ```
 
+Note: In this example, 'dcoga.R', and 'pcoga.R' are the R version functions for density, and distribution functions of convolution of gamma distributions. We do not put these two R functions as export functions in package 'coga', but you can still use them by 'coga:::dcoga', and 'coga:::pcoga'.
+
+The convolution of two gamma distributions is a special situation of convolution of gamma distributions. The functions 'dcoga2dim' and 'pcoga2dim' can solve this problem with higher efficiency (they are much more faster than the general functions, 'dcoga' and 'pcoga'.)
+
+```{r, echo=TRUE}
+grid <- seq(0, 15, length.out=100)
+
+microbenchmark::microbenchmark(
+    dcoga(grid, shape=c(3,4), rate=c(2,3)),
+    dcoga2dim(grid, 3, 4, 2, 3),
+    pcoga(grid, shape=c(3,4), rate=c(2,3)),
+    pcoga2dim(grid, 3, 4, 2, 3))
+```
+
 # Parameters Recycling
 
-Please take care of that `dcoga`, and `pcoga` in this package can handle different lengths of parameter `shape` and `rate` by recycling shorter parameter. That means that `dcoga(3, c(2,3), c(3,4,5,3,4))` and `dcoga(3, c(2,3,2,3,2), c(3,4,5,3,4))` will give the same result.
+Please take care of that R functions `dcoga`, `pcoga`, and `rcoga` in this package can handle different lengths of parameter `shape` and `rate` by recycling shorter parameter. That means that `dcoga(3, c(2,3), c(3,4,5,3,4))` and `dcoga(3, c(2,3,2,3,2), c(3,4,5,3,4))` will give the same result. If the length of the longer parameter is not a multiple of the length of shorter one, these three R functions will give a **Warning** message.
 
 # References
 
 [1] Moschopoulos, Peter G. "The distribution of the sum of independent gamma random variables." Annals of the Institute of Statistical Mathematics 37.1 (1985): 541-544.
+
+[2] Mathai, A.M.: Storage capacity of a dam with gamma type inputs. Ann. Inst. Statist.Math. 34, 591-597 (1982).

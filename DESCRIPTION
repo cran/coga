@@ -1,7 +1,7 @@
 Package: coga
 Title: Convolution of Gamma Distributions
-Version: 0.1.0
-Date: 2017-05-22
+Version: 0.2.0
+Date: 2017-06-28
 Authors@R: c(
     person("Chaoran", "Hu", email = "chaoran.hu@uconn.edu", role = c("aut", "cre")),
     person("Vladimir", "Pozdnyakov", email = "vladimir.pozdnyakov@uconn.edu", role = "ths"),
@@ -18,15 +18,16 @@ LazyData: true
 RoxygenNote: 6.0.1
 Suggests: knitr, rmarkdown, testthat, microbenchmark
 VignetteBuilder: knitr
-Imports: stats, Rcpp
-LinkingTo: Rcpp
-BugReports: https://bitbucket.org/chaoranhu/coga/issues
-URL: https://bitbucket.org/chaoranhu/coga
+Imports: stats, Rcpp, RcppGSL
+LinkingTo: Rcpp, RcppGSL
+BugReports: https://github.com/ChaoranHu/coga/issues
+URL: https://github.com/ChaoranHu/coga
 NeedsCompilation: yes
-Packaged: 2017-05-24 21:50:16 UTC; ChaoranHu
+SystemRequirements: GNU GSL
+Packaged: 2017-06-28 18:24:35 UTC; ChaoranHu
 Author: Chaoran Hu [aut, cre],
   Vladimir Pozdnyakov [ths],
   Jun Yan [ths]
 Maintainer: Chaoran Hu <chaoran.hu@uconn.edu>
 Repository: CRAN
-Date/Publication: 2017-05-25 07:37:38 UTC
+Date/Publication: 2017-06-28 18:36:37 UTC

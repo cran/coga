@@ -31,3 +31,12 @@ microbenchmark::microbenchmark(
     coga:::pcoga.R(grid, shape=c(3,4,5), rate=c(2,3,4))
 )
 
+## ---- echo=TRUE----------------------------------------------------------
+grid <- seq(0, 15, length.out=100)
+
+microbenchmark::microbenchmark(
+    dcoga(grid, shape=c(3,4), rate=c(2,3)),
+    dcoga2dim(grid, 3, 4, 2, 3),
+    pcoga(grid, shape=c(3,4), rate=c(2,3)),
+    pcoga2dim(grid, 3, 4, 2, 3))
+

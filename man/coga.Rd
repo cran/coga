@@ -13,7 +13,7 @@ density, distribution function and do simulation work.
 }
 \section{coga functions}{
 
-dcoga, pcoga, and rcoga
+dcoga, pcoga, rcoga, dcoga2dim, and pcoga2dim.
 }
 
 \author{
