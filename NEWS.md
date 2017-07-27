@@ -1,3 +1,11 @@
+# CHANGES IN coga VERSION 0.2.1
+
+## MINOR CHANGES
+
+* Rename variable `sun` to `starn`, in order to meet the requirement of solaris.
+
+* Remove `RcppGSL` from import.
+
 # CHANGES IN coga VERSION 0.2.0
 
 ## MAJOR CHANGES
