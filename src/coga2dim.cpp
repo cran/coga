@@ -20,10 +20,9 @@ double dcoga2dim_nv(double x, double shape1, double shape2,
   gsl_set_error_handler_off();
   double lgam = shape1 + shape2;
   double parx = (1/beta1 - 1/beta2) * x;
-  double result = pow(x, lgam - 1);
-  result *= gsl_sf_hyperg_1F1(shape2, lgam, parx);
-  result /= pow(beta1, shape1) * pow(beta2, shape2);
-  result /= exp(R::lgammafn(lgam) + (x / beta1));
+  double result = gsl_sf_hyperg_1F1(shape2, lgam, parx);
+  result *= R::dgamma(x, lgam, beta1, 0);
+  result *= pow(beta1 / beta2, shape2);
   return result;
 }
 
@@ -80,17 +79,31 @@ NumericVector dcoga2dim(NumericVector x, double shape1, double shape2,
 }
 
 
+
+
+//Distribuiton Function
 // [[Rcpp::export]]
 double pcoga2dim_nv(double x, double shape1, double shape2,
 		 double rate1, double rate2) {
   // transfer rate to scale
   double beta1 = 1 / rate1;
   double beta2 = 1 / rate2;
+
+  if (beta1 > beta2) {
+    double beta_cart = beta1;
+    beta1 = beta2;
+    beta2 = beta_cart;
+    double shape_cart = shape1;
+    shape1 = shape2;
+    shape2 = shape_cart;
+  }
+
   /*
   // handle one shape is 0
   if (shape1 == 0) return R::pgamma(x, shape2, beta2, 1, 0);
   if (shape2 == 0) return R::pgamma(x, shape1, beta1, 1, 0);
   */
+  
   // make convergence faster
   double lgam = shape1 + shape2;
   double starn = 1 - (beta1 / beta2);
@@ -116,6 +129,8 @@ double pcoga2dim_nv(double x, double shape1, double shape2,
   return result * pow(beta1/beta2, shape2);
 }
 
+
+
 //' @rdname dcoga2dim
 //' @export
 // [[Rcpp::export]]
@@ -123,7 +138,7 @@ NumericVector pcoga2dim(NumericVector x, double shape1, double shape2,
 			double rate1, double rate2) {
   if (rate1 <= 0 || rate2 <= 0) stop("all rate should be larger than 0");
   if (shape1 < 0 || shape2 < 0) stop("all shape should be larger than or equal to 0");
-
+  
   int n = x.size();
   NumericVector out(n);
   for (int i = 0; i < n; ++i) {
@@ -188,3 +203,7 @@ double pcoga2dim_diff_shape (double x,
   result *= gsl_sf_hyperg_1F1(shape2, lgam, parx);
   return result;
 }
+
+
+
+
