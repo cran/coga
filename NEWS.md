@@ -1,3 +1,10 @@
+# CHANGES IN coga VERSION 1.0.0
+
+## MAJOR CHANGES
+
+* Re-document whole package, including object documentation, vignette and etc.
+
+
 # CHANGES IN coga VERSION 0.2.2
 
 ## MAJOR CHANGES

@@ -165,25 +165,71 @@ double dcoga_approx_nv(double x, NumericVector alpha, NumericVector beta) {
   return result;
 }
 
+// do recycling x to follw y's size
+// the same function as recycling with diff name
+NumericVector recycling2(NumericVector x, NumericVector y) {
+  // recycling x to y
+  int nx = x.size();
+  int ny = y.size();
+  int mx = x.size();
+  while(TRUE) {
+    for(int i = 0; i < nx; ++i) {
+      x.push_back(x[i]);
+      mx = x.size();
+      if (mx == ny) break;
+    }
+    if (mx == ny) break;
+  }
+  return x;
+}
 
-//' Convolution of Gamma distribuitons with Approximation Method
+
+
+//' Convolution of Gamma distribuitons (Approximation Method)
 //'
 //' Density and distribution function of convolution of gamma distributions
 //' are calculated based on approximation method from Barnabani(2017), which
-//' gives us the benefit of faster calculation speed under three or more
-//' variables case.
+//' gives us the approximate result and faster evaluation than \code{dcoga}
+//' and \code{pcoga} during three or more variables case. **So, we recommend
+//' these functions for three or more varibales case with approximate result.**
 //'
 //' @param x Quantiles.
-//' @param shape Numerical vector of shape parameters.
-//' @param rate Numerical vector of rate parameters.
+//' @param shape Numerical vector of shape parameters for each gamma distributions,
+//' all shape parameters should be larger than or equal to 0, with at least three
+//' non-zero.
+//' @param rate Numerical vector of rate parameters for each gamma distributions,
+//' all rate parameters should be larger than 0.
 //'
 //' @references
 //' Barnabani, M. (2017). An approximation to the convolution of gamma
 //' distributions. Communications in Statistics - Simulation and Computation
 //' 46(1), 331-343.
+//'
 //' @examples
-//' dcoga_approx(1:10, c(1, 2, 3), c(2, 3, 4))
-//' pcoga_approx(1:10, c(1, 2, 3), c(2, 3, 4))
+//' ## Example 1: Correctness check
+//' set.seed(123)
+//' ## do grid
+//' y <- rcoga(100000, c(3,4,5), c(2,3,4))
+//' grid <- seq(0, 15, length.out=100)
+//' ## calculate pdf and cdf
+//' pdf <- dcoga_approx(grid, shape=c(3,4,5), rate=c(2,3,4))
+//' cdf <- pcoga_approx(grid, shape=c(3,4,5), rate=c(2,3,4))
+//'
+//' ## plot pdf
+//' plot(density(y), col="blue")
+//' lines(grid, pdf, col="red")
+//'
+//' ## plot cdf
+//' plot(ecdf(y), col="blue")
+//' lines(grid, cdf, col="red")
+//'
+//' ## Example 2: Show parameter recycling
+//' ## these pairs give us the same results
+//' dcoga_approx(1:5, c(1, 2), c(1, 3, 4, 2, 5))
+//' dcoga_approx(1:5, c(1, 2, 1, 2, 1), c(1, 3, 4, 2, 5))
+//'
+//' pcoga_approx(1:5, c(1, 3, 5, 2, 2), c(3, 5))
+//' pcoga_approx(1:5, c(1, 3, 5, 2, 2), c(3, 5, 3, 5, 3))
 //'
 //' @author Chaoran Hu
 //'
@@ -192,9 +238,23 @@ double dcoga_approx_nv(double x, NumericVector alpha, NumericVector beta) {
 NumericVector dcoga_approx(NumericVector x,
 			   NumericVector shape,
 			   NumericVector rate) {
+  // input check
+  if (is_true(any(rate <= 0))) stop("all rate should be larger than 0.");
+  if (is_true(any(shape < 0))) stop("all shape should be larger than or equal to 0, with at least three non-zero.");
+  // handle recycle
+  if (shape.size() != rate.size()) {
+    if (shape.size() < rate.size()) {
+      if (rate.size() % shape.size() != 0) warning("number of rate is not a multiple of shape.");
+      shape = recycling2(shape, rate);
+    } else {
+      if (shape.size() % rate.size() != 0) warning("number of shape is not a multiple of rate.");
+      rate = recycling2(rate, shape);
+    }
+  }
   rate = rate[shape > 0];
   shape = shape[shape > 0];
-  if (shape.size() < 3) stop("only work for three or more variables case");
+  if (shape.size() < 3) stop("all shape should be larger than or equal to 0, with at least three non-zero.");
+  // input check
 
   NumericVector beta = 1 / rate;
   int n = x.size();
@@ -262,10 +322,24 @@ double pcoga_approx_nv(double x, NumericVector alpha, NumericVector beta) {
 NumericVector pcoga_approx(NumericVector x,
 			   NumericVector shape,
 			   NumericVector rate) {
+  // input check
+  if (is_true(any(rate <= 0))) stop("all rate should be larger than 0.");
+  if (is_true(any(shape < 0))) stop("all shape should be larger than or equal to 0, with at least three non-zero.");
+  // handle recycle
+  if (shape.size() != rate.size()) {
+    if (shape.size() < rate.size()) {
+      if (rate.size() % shape.size() != 0) warning("number of rate is not a multiple of shape.");
+      shape = recycling2(shape, rate);
+    } else {
+      if (shape.size() % rate.size() != 0) warning("number of shape is not a multiple of rate.");
+      rate = recycling2(rate, shape);
+    }
+  }
   rate = rate[shape > 0];
   shape = shape[shape > 0];
-  if (shape.size() < 3) stop("only work for three or more variables case");
-
+  if (shape.size() < 3) stop("all shape should be larger than or equal to 0, with at least three non-zero.");
+  // input check
+  
   NumericVector beta = 1 / rate;
   int n = x.size();
   NumericVector result(n);
