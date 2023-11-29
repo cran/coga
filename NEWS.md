@@ -1,3 +1,10 @@
+# CHANGES IN coga VERSION 1.2.1
+
+## MINOR CHANGES
+
+* Updated 'RcppExports.cpp' to solve 'warning: format string is not a string literal (potentially insecure) [-Wformat-security]'
+
+
 # CHANGES IN coga VERSION 1.2.0
 
 ## MINOR CHANGES
