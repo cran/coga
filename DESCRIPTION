@@ -1,9 +1,9 @@
 Package: coga
 Title: Convolution of Gamma Distributions
-Version: 1.2.1
-Date: 2023-11-29
+Version: 1.2.2
+Date: 2024-01-10
 Authors@R: c(
-    person("Chaoran", "Hu", email = "chaoran.hu@uconn.edu", role = c("aut", "cre")),
+    person("Chaoran", "Hu", email = "huchaoran.stat@gmail.com", role = c("aut", "cre")),
     person("Vladimir", "Pozdnyakov", email = "vladimir.pozdnyakov@uconn.edu", role = "ths"),
     person("Jun", "Yan", email = "jun.yan@uconn.edu", role = "ths"))
 Description: Evaluation for density and distribution function of convolution of gamma
@@ -27,10 +27,10 @@ BugReports: https://github.com/ChaoranHu/coga/issues
 URL: https://github.com/ChaoranHu/coga
 NeedsCompilation: yes
 SystemRequirements: GNU GSL
-Packaged: 2023-11-29 21:39:13 UTC; chaoranhu
+Packaged: 2024-01-10 20:51:44 UTC; chaoranhu
 Author: Chaoran Hu [aut, cre],
   Vladimir Pozdnyakov [ths],
   Jun Yan [ths]
-Maintainer: Chaoran Hu <chaoran.hu@uconn.edu>
+Maintainer: Chaoran Hu <huchaoran.stat@gmail.com>
 Repository: CRAN
-Date/Publication: 2023-11-29 21:50:06 UTC
+Date/Publication: 2024-01-10 21:33:11 UTC
